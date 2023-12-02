@@ -1,17 +1,20 @@
 /* 
 Author: Muhammad Afiq
 Date: 19 Nov 2023
-Purpose: To create a simple To-Do List app by applyiing showDialogBox widget and ListView.builder
+Purpose: To create a simple To-Do List app by applying showDialogBox widget and ListView.builder
 */
-
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: MyMainPage()));
+void main() => runApp(MaterialApp(
+    home: MyMainPage(),
+    theme: ThemeData(
+      primarySwatch: Colors.purple,
+      splashColor: Colors.amber,
+    )));
 
 class MyMainPage extends StatefulWidget {
-  const MyMainPage({super.key});
+  const MyMainPage({Key? key}) : super(key: key);
 
   @override
   State<MyMainPage> createState() => _MyMainPageState();
@@ -38,7 +41,13 @@ class _MyMainPageState extends State<MyMainPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("Cancel"),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
               ),
               TextButton(
                 onPressed: () {
@@ -47,7 +56,13 @@ class _MyMainPageState extends State<MyMainPage> {
                   });
                   Navigator.of(context).pop();
                 },
-                child: const Text("Submit"),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
               ),
             ],
           );
@@ -58,23 +73,54 @@ class _MyMainPageState extends State<MyMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('To Do List'),
+          title: Text(
+            'To Do List',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           centerTitle: true,
         ),
-        body: ListView.builder(
-            itemCount: _todoRecords.length,
-            itemBuilder: (context, index) {
-              final toDo = _todoRecords[index];
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+              itemCount: _todoRecords.length,
+              itemBuilder: (context, index) {
+                final toDo = _todoRecords[index];
 
-              return ListTile(
-                title: Text(toDo),
-                onTap: () {
-                  setState(() {
-                    _todoRecords.removeAt(index);
-                  });
-                },
-              );
-            }),
+                return Container(
+                  color: Colors.amber[100],
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          toDo,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.remove_circle_outline,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _todoRecords.removeAt(index);
+                            });
+                          },
+                        ),
+                      ),
+                      Divider(
+                        thickness: 2.0,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+        ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: _adddingToDO,
